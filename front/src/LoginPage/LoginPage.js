@@ -17,6 +17,18 @@ const locationOptions = {
   maximumAge: 0,
 };
 
+const LoginPage = () => {
+
+  const [username, setUsername] = useState("");
+   const [locationErrorOccurred, setLocationErrorOccurred] = useState(false);
+
+  const navigate = useNavigate();
+
+   const handleLogin = () => {
+      navigate('/map');
+   }
+
+
 const onSucess = (position) => {
   console.log(position);
 }
@@ -24,28 +36,20 @@ const onSucess = (position) => {
 const onError = (error) => {
     console.log("Error occurred when trying to get location");
     console.log(error);
+    setLocationErrorOccurred(true);
   }
 
-
-const LoginPage = () => {
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(onSucess, onError, locationOptions);
-     }, [])
-     
-    const [username, setUsername] = useState("");
-
-    const navigate = useNavigate();
-
-     const handleLogin = () => {
-        navigate('/map');
-     }
-
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(onSucess, onError, locationOptions);
+ }, [])
+ 
   return (
     <div className='l_page_main_container'>
          <div className='l_page_box'>
              <Logo/>
              <LoginInput username={username} setUsername={setUsername}/>
-             <LoginButton disabled={!isUsernameValid} onClickHandler={handleLogin}/>
+             
+             <LoginButton disabled={!isUsernameValid(username) || locationErrorOccurred} onClickHandler={handleLogin}/>
          </div>
     </div>
   )
