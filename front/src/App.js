@@ -1,8 +1,20 @@
 import React from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+} from 'react-dom'
+import LoginPage from './LoginPage/LoginPage'
+import MapPage from './MapPage/MapPage'
 
 const App = () => {
   return (
-    <div>Hello</div>
+    <Router>
+       <Routes>
+          <Route path='/' element={<LoginPage/>}/>
+          <Route path='/map' element={<MapPage/>}/>
+
+       </Routes>
+    </Router>
   )
 }
 

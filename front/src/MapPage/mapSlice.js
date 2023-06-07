@@ -17,3 +17,5 @@ export const mapSlice = createSlice({
 });
 
 export const { setMyLocation } = mapSlice.actions;
+
+export default mapSlice.reducer;
