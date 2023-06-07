@@ -1,25 +1,18 @@
 import React, {useState} from 'react'
-import './LoginPage.css'
 import { useNavigate } from 'react-router-dom'
 
-const Logo = () => {
-      return <p className='logo'>
-          GeoCall
-        </p>
+import LoginButton from './LoginButton'
+import LoginInput from './LoginInput'
+import Logo from './Logo'
+
+import './LoginPage.css'
+
+
+const isUsernameValid = (username) => {
+    return username.length > 0 && username.length < 10 && !username.includes(' ');
 }
 
-const LoginInput = (props) => {
-    const { username, setUsername } = props;
-      const handleValueChange = (e) => {
-         setUsername(e.target.value);
-      }
 
-     return <input className='l_page_input' value={username} onChange={handleValueChange}/>
-};
-
-const LoginButton = ({onClickHandler}) => {
-    return <button onClick={onClickHandler} className='l_page_login_button'>Login</button>
-}
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -35,7 +28,7 @@ const LoginPage = () => {
          <div className='l_page_box'>
              <Logo/>
              <LoginInput username={username} setUsername={setUsername}/>
-             <LoginButton onClickHandler={handleLogin}/>
+             <LoginButton disabled={!isUsernameValid} onClickHandler={handleLogin}/>
          </div>
     </div>
   )
