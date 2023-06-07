@@ -3,8 +3,12 @@ import React, {useEffect, useState} from 'react'
 import LoginButton from './LoginButton'
 import LoginInput from './LoginInput'
 import Logo from './Logo'
+import { useDispatch } from 'react-redux'
+import { setMyLocation } from '../MapPage/mapSlice'
+
 
 import './LoginPage.css'
+import { getFakeLocation } from './FAKE_LOCATION'
 
 
 const isUsernameValid = (username) => {
@@ -23,6 +27,7 @@ const LoginPage = () => {
    const [locationErrorOccurred, setLocationErrorOccurred] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
    const handleLogin = () => {
       navigate('/map');
@@ -30,7 +35,11 @@ const LoginPage = () => {
 
 
 const onSucess = (position) => {
-  console.log(position);
+  //console.log(position);
+  dispatch(setMyLocation({
+    lat: position.coords.latitude,
+    lng: position.coords.longitude,
+  }));
 }
 
 const onError = (error) => {
@@ -40,9 +49,10 @@ const onError = (error) => {
   }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(onSucess, onError, locationOptions);
+   // navigator.geolocation.getCurrentPosition(onSucess, onError, locationOptions);
+   onSucess(getFakeLocation())
  }, [])
- 
+
   return (
     <div className='l_page_main_container'>
          <div className='l_page_box'>
