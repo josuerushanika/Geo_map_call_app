@@ -1,4 +1,5 @@
 import React from 'react'
+import locationIcon from '../resources/images/location-icon.svg'
 
 const Marker = (props) => {
     const {
@@ -6,9 +7,7 @@ const Marker = (props) => {
     } = props;
   return (
     <div className='map_page_marker_container'>
-       <img 
-          
-       />
+       <img src={locationIcon} alt={username} className='map_page_marker_img'/>
     </div>
   )
 }
