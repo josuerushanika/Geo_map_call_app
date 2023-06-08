@@ -21,10 +21,17 @@ export const mapSlice = createSlice({
         (onlineUser) => onlineUser.socketId !== action.payload
       );
     },
+    setCardChosenOption: (state, action) => {
+      state.cardChosenOption = action.payload;
+    },
   },
 });
 
-export const { setMyLocation, setOnlineUsers, removeDisconnectedUser } =
-  mapSlice.actions;
+export const {
+  setMyLocation,
+  setOnlineUsers,
+  removeDisconnectedUser,
+  setCardChosenOption,
+} = mapSlice.actions;
 
 export default mapSlice.reducer;

@@ -1,21 +1,20 @@
-import { useNavigate } from 'react-router-dom'
-import React, {useEffect, useState} from 'react'
-import LoginButton from './LoginButton'
-import LoginInput from './LoginInput'
-import Logo from './Logo'
-import { useDispatch, useSelector } from 'react-redux'
-import { setMyLocation } from '../MapPage/mapSlice'
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setMyLocation } from "../MapPage/mapSlice";
+import { getFakeLocation } from "./FAKE_LOCATION";
+import { connectWithSocketIOServer } from "../socketConnection/socketConn";
+import { proceedWithLogin } from "../store/actions/loginPageActions";
 
+import LoginButton from "./LoginButton";
+import LoginInput from "./LoginInput";
+import Logo from "./Logo";
 
-import './LoginPage.css'
-import { getFakeLocation } from './FAKE_LOCATION'
-import { connectWithSocketIOServer } from '../socketConnection/socketConn'
-import { proceedWithLogin } from '../store/actions/loginPageActions'
-
+import "./LoginPage.css";
 
 const isUsernameValid = (username) => {
-    return username.length > 0 && username.length < 10 && !username.includes(' ');
-}
+  return username.length > 0 && username.length < 10 && !username.includes(" ");
+};
 
 const locationOptions = {
   enableHighAccuracy: true,
@@ -24,66 +23,68 @@ const locationOptions = {
 };
 
 const LoginPage = () => {
-
   const [username, setUsername] = useState("");
-   const [locationErrorOccurred, setLocationErrorOccurred] = useState(false);
+  const [locationErrorOccurred, setLocationErrorOccurred] = useState(false);
 
-   const myLocation = useSelector((state) => state.map.myLocation);
+  const myLocation = useSelector((state) => state.map.myLocation);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-   const handleLogin = () => {
-      proceedWithLogin({
-        username,
-        coords: {
-          lng: myLocation.lng,
-          lat: myLocation.lat,
-        }
+  const handleLogin = () => {
+    proceedWithLogin({
+      username,
+      coords: {
+        lng: myLocation.lng,
+        lat: myLocation.lat,
+      },
+    });
+    navigate("/map");
+  };
+
+  const onSuccess = (position) => {
+    dispatch(
+      setMyLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
       })
-      navigate('/map');
-   }
+    );
+  };
 
-
-const onSucess = (position) => {
-  //console.log(position);
-  dispatch(setMyLocation({
-    lat: position.coords.latitude,
-    lng: position.coords.longitude,
-  }));
-}
-
-const onError = (error) => {
+  const onError = (error) => {
     console.log("Error occurred when trying to get location");
     console.log(error);
     setLocationErrorOccurred(true);
-  }
+  };
 
   useEffect(() => {
-   // navigator.geolocation.getCurrentPosition(onSucess, onError, locationOptions);
-   onSucess(getFakeLocation())
- }, [])
+    // navigator.geolocation.getCurrentPosition(
+    //   onSuccess,
+    //   onError,
+    //   locationOptions
+    // );
+
+    onSuccess(getFakeLocation());
+  }, []);
 
   useEffect(() => {
     if (myLocation) {
-      connectWithSocketIOServer()
+      connectWithSocketIOServer();
     }
-
-  },[
-    myLocation
-  ]);
-
+  }, [myLocation]);
 
   return (
-    <div className='l_page_main_container'>
-         <div className='l_page_box'>
-             <Logo/>
-             <LoginInput username={username} setUsername={setUsername}/>
-             
-             <LoginButton disabled={!isUsernameValid(username) || locationErrorOccurred} onClickHandler={handleLogin}/>
-         </div>
+    <div className="l_page_main_container">
+      <div className="l_page_box">
+        <Logo />
+        <LoginInput username={username} setUsername={setUsername} />
+        <LoginButton
+          disabled={!isUsernameValid(username) || locationErrorOccurred}
+          onClickHandler={handleLogin}
+        />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
