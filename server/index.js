@@ -4,6 +4,7 @@ const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const { disconnect } = require('process');
+const { BroadcastChannel } = require('worker_threads');
 
 const server = http.createServer(app);
 
@@ -22,14 +23,6 @@ app.get('/', (req, res) => {
 
 let onlineUsers = {};
 
-// {
-//   321313213213: {
-//     username: "user1",
-//     coords: {
-
-//     }
-//   }
-// }
 
 io.on("connection", (socket) => {
   console.log(`User Connected of the id: ${socket.id}`);
@@ -37,6 +30,7 @@ io.on("connection", (socket) => {
 
   socket.on('disconnect', () => {
      disconnectEventHandler(socket.id);
+    // BroadcastDisconnectedUserDetails(socket);
   });
 });
 
@@ -52,6 +46,7 @@ server.listen(PORT, () => {
 const disconnectEventHandler = (id) => {
    console.log(`user disconnected of the id : ${id}`);
    removeOnlineUser(id);
+   BroadcastDisconnectedUserDetails(socket);
 };
 
 const removeOnlineUser = (id) => {
@@ -61,10 +56,32 @@ const removeOnlineUser = (id) => {
   console.log(onlineUsers);
 };
 
+const BroadcastDisconnectedUserDetails = (disconnectedUserSocketId) => {
+  io.to('logged-users').emit('user-disconnected',disconnectedUserSocketId)
+} 
+
+
 const loginEventHandler = (socket, data) => {
+  socket.join('logged-users');
+
    onlineUsers[socket.id] = {
     username: data.username,
     coords: data.coords,
    }
    console.log(onlineUsers);
-}
+
+   io.to("logged-users").emit("online-users", convertOnlineUsersToArray());
+};
+
+const convertOnlineUsersToArray = () => {
+  const onlineUsersArray = [];
+
+  Object.entries(onlineUsers).forEach(([key, value]) => {
+    onlineUsersArray.push({
+      sockedId: key,
+      username: value.username,
+      coords: value.coords,
+    })
+  })
+  return onlineUsersArray;
+};

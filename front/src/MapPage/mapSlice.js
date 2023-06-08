@@ -12,10 +12,13 @@ export const mapSlice = createSlice({
     reducers: {
         setMyLocation: (state, action) => {
             state.myLocation = action.payload;
+        },
+        setOnlineUsers: (state, action) => {
+           state.onlineUsers = action.payload;
         }
     }
 });
 
-export const { setMyLocation } = mapSlice.actions;
+export const { setMyLocation, setOnlineUsers } = mapSlice.actions;
 
 export default mapSlice.reducer;
