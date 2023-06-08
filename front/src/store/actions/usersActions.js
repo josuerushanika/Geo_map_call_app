@@ -1,5 +1,5 @@
 import store from "../store"
-import { setOnlineUsers } from "../../MapPage/mapSlice";
+import { setOnlineUsers,removeDisconnectedUser } from "../../MapPage/mapSlice";
 
 export const onlineUsersHandler = (socketId, usersData) => {
     store.dispatch( setOnlineUsers(usersData.map(user => {
@@ -11,3 +11,7 @@ export const onlineUsersHandler = (socketId, usersData) => {
     )
     );
 };
+
+export const userDisconnectedHandler = (disconnectedUserSocketId) => {
+    store.dispatch(removeDisconnectedUser( disconnectedUserSocketId ))
+}
