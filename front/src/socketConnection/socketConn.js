@@ -9,3 +9,7 @@ export const connectWithSocketIOServer = () =>{
         console.log('connected to socket server');
     })
 };
+
+export const login = (data) => {
+    socket.emit("user-login", data);
+};

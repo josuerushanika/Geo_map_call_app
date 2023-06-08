@@ -10,6 +10,7 @@ import { setMyLocation } from '../MapPage/mapSlice'
 import './LoginPage.css'
 import { getFakeLocation } from './FAKE_LOCATION'
 import { connectWithSocketIOServer } from '../socketConnection/socketConn'
+import { proceedWithLogin } from '../store/actions/loginPageActions'
 
 
 const isUsernameValid = (username) => {
@@ -33,6 +34,13 @@ const LoginPage = () => {
   const dispatch = useDispatch();
 
    const handleLogin = () => {
+      proceedWithLogin({
+        username,
+        coords: {
+          lng: myLocation.lng,
+          lat: myLocation.lat,
+        }
+      })
       navigate('/map');
    }
 
