@@ -1,0 +1,74 @@
+.map_page_container {
+    height: 100vh;
+    width: 100%;
+}
+
+
+.map_page_card_container {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 4px;
+    width: 300px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.map_page_card_container:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.map_page_marker_container {
+    width: 30px;
+    height: 30px;
+    position: relative;
+}
+
+.map_page_marker_img {
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.map_page_marker_img:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.map_page_marker_text {
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.map_page_card_label {
+    margin: 10px 0 0 10px;
+    padding: 0;
+}
+
+.map_page_card_buttons_container {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    top: 10px;
+}
+
+.map_page_card_separator {
+    height: 100%;
+    width: 2px;
+    background-color: black;
+    border-radius: 8px;
+}
+
+.map_page_card_img {
+    width: 45px;
+    height: 45px;
+    margin-right: 15px;
+}
